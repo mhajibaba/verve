@@ -83,7 +83,7 @@ object Main {
     // filter waste data
     // common for goal 2 and 3 so used inPlace
     //--------------------------------------------//
-    /** SUPPOSE A.1
+    /** ASSUMPTION A.1
      * This can be supposed that each advertiser on each application is for a unique country
      * So we can improve data by concluding missing country data from other data
      * for example all records with advertise 12 and appId 5 belong to Italy ("country_code": "IT",)
@@ -93,7 +93,7 @@ object Main {
      */
     impressions.filterInPlace(x => x.id != null && x.countryCode != null && !x.countryCode.isBlank)
 
-    /** SUPPOSE A.2
+    /** ASSUMPTION A.2
      * These two tasks will use as two different services
      * So performance calculated for each separately
      * We can use intermediate data for goal2 and goal3 to achieve more performance

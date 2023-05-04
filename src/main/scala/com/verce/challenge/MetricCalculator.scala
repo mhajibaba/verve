@@ -11,7 +11,7 @@ object MetricCalculator {
 
   def calc(impressions: List[Impression], clicks: List[Click]) = {
 
-    /** SUPPOSE B.1
+    /** ASSUMPTION B.1
      * We suppose each click records equals to a unique click event and we must calculate them
      * if not, we can remove duplicate records
      */
@@ -21,7 +21,7 @@ object MetricCalculator {
     println(resClicks)
     */
 
-    /** SUPPOSE B.2
+    /** ASSUMPTION B.2
      * we suppose each impression event has a unique id, so we must remove duplicates
      * Therefore we use distinct here
      * */

@@ -12,14 +12,14 @@ object AdSelector {
   def collect(impressions: List[Impression], clicks: List[Click]) = {
 
 
-    /** SUPPOSE C.1
-     * same as SUPPOSE B.1
+    /** ASSUMPTION C.1
+     * same as ASSUMPTION B.1
      */
     //this show total revenue earned by clicks for each impression
     val revenues: Map[String, Double] = clicks.groupMapReduce(_.impressionId)(x => x.revenue)(_ + _)
 
-    /** SUPPOSE C.2
-     * OPPOSITE to SUPPOSE B.2
+    /** ASSUMPTION C.2
+     * OPPOSITE to ASSUMPTION B.2
      * we suppose each records in impression.json belongs to an impression (i.e. showing ad)
      * and the id used in these records is not for each show ad, so we cannot remove duplicates
      */
