@@ -35,7 +35,7 @@ object Main {
 
   def main(args: Array[String]) = {
 
-    /** ============Goal 1=========== * */
+    /** ============Goal 1=========== **/
 
     if (args.isEmpty || args.length <= 2) {
       println(usage)
@@ -49,6 +49,16 @@ object Main {
         lstClickFiles += filename
       case Array("--ifile", filename: String) =>
         lstImpressionFiles += filename
+    }
+
+    if(lstClickFiles.isEmpty) {
+      println("Please provide at least one file contains Clicks")
+      exit(1)
+    }
+
+    if (lstImpressionFiles.isEmpty) {
+      println("Please provide at least one file contains Impressions")
+      exit(1)
     }
 
     //println("impressions: " + lstImpressionFiles.toList)
@@ -84,15 +94,15 @@ object Main {
     impressions.filterInPlace(x => x.id != null && x.countryCode != null && !x.countryCode.isBlank)
 
     /** SUPPOSE A.2
-     * This two tasks will use as two different services
+     * These two tasks will use as two different services
      * So performance calculated for each separately
      * We can use intermediate data for goal2 and goal3 to achieve more performance
      * but I solve this two problems separately
      */
-    /** ============Goal 2=========== * */
+    /** ============Goal 2=========== **/
     MetricCalculator.calc(impressions.toList, clicks.toList) //convert arguments to immutable list
 
-    /** ============Goal 3=========== * */
+    /** ============Goal 3=========== **/
 
     AdSelector.collect(impressions.toList, clicks.toList) //convert arguments to immutable list
   }
