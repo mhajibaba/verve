@@ -24,12 +24,12 @@ object EventReader {
    * val impressions = lstImpressionFiles.flatMap(EventReader.parse[Impression](_))
    * val clicks = lstClickFiles.flatMap(EventReader.parse[Click](_))
    *
-      def parse[T](filePath: String): IndexedSeq[T] = {
+      def parse[T](filePath: String): List[T] = {
 
         val fileContents = Source.fromFile(filePath).mkString
         //println(fileContents.size)
 
-        val records = mapper.readValue(fileContents, classOf[IndexedSeq[T]])
+        val records = mapper.readValue(fileContents, classOf[List[T]])
         //println(records.length)
 
         records
