@@ -1,4 +1,4 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / version := "0.1.1"
 ThisBuild / organization := "com.verve.challenge"
 ThisBuild / scalaVersion := "2.13.10"
 ThisBuild / assemblyMergeStrategy := {
@@ -14,5 +14,6 @@ lazy val app = (project in file("."))
   )
 
 libraryDependencies ++= Seq(
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.14.1"
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.14.1",
+  "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.0"
 )

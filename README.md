@@ -76,3 +76,22 @@ In my future work I'm going to consider the followings:
 
     Memory utilization is not concern for this challenge. However, we can use some method and scala features like lazy values to use a better consumption of memory.
  
+5. **Use Polymorphism**
+   
+	Use generic class to remove duplicate codes
+	```	   
+	def parse[T](filePath: String): IndexedSeq[T] = {
+
+		val fileContents = Source.fromFile(filePath).mkString
+		//println(fileContents.size)
+
+		val records = mapper.readValue(fileContents, classOf[IndexedSeq[T]])
+		//println(records.length)
+
+		records
+	}
+	
+	val impressions = lstImpressionFiles.flatMap(EventReader.parse[Impression](_))
+	val clicks = lstClickFiles.flatMap(EventReader.parse[Click](_))
+	```
+  

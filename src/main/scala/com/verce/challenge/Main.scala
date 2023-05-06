@@ -3,6 +3,7 @@ package com.verce.challenge
 import java.io.File
 import scala.collection.mutable.ListBuffer
 import scala.sys.exit
+import scala.collection.parallel.CollectionConverters._
 
 /**
  * FUTURE WORKS:
@@ -77,8 +78,6 @@ object Main {
 
     val impressions = lstImpressionFiles.flatMap(EventReader.parseImpressions(_))
 
-    val clicks = lstClickFiles.flatMap(EventReader.parseClicks(_))
-
     //--------------------------------------------//
     // filter waste data
     // common for goal 2 and 3 so used inPlace
@@ -91,7 +90,15 @@ object Main {
      * has the same country code as others with the same "app_id","advertiser_id".
      * However, we don't suppose this in this challenge.
      */
-    impressions.filterInPlace(x => x.id != null && x.countryCode != null && !x.countryCode.isBlank)
+    val impressionsRefined = impressions.filterInPlace(x => x.id != null && x.countryCode != null && !x.countryCode.isBlank).
+      toList //convert impressions to immutable list
+
+    /**
+     * use parallel flatmap
+     */
+    val clicks = lstClickFiles.par.flatMap(EventReader.parseClicks(_)).
+      toList //convert clicks to immutable list
+
 
     /** ASSUMPTION A.2
      * These two tasks will use as two different services
@@ -100,11 +107,11 @@ object Main {
      * but I solve this two problems separately
      */
     /** ============Goal 2=========== **/
-    MetricCalculator.calc(impressions.toList, clicks.toList) //convert arguments to immutable list
+    MetricCalculator.calc(impressionsRefined, clicks)
 
     /** ============Goal 3=========== **/
 
-    AdSelector.collect(impressions.toList, clicks.toList) //convert arguments to immutable list
+    AdSelector.collect(impressionsRefined, clicks)
   }
 
 }

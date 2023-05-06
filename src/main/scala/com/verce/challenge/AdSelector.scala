@@ -3,6 +3,7 @@ package com.verce.challenge
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.verce.challenge.beans.{AppInfGoal3, Click, Impression}
+import scala.collection.parallel.CollectionConverters._
 
 object AdSelector {
 
@@ -24,7 +25,7 @@ object AdSelector {
      * and the id used in these records is not for each show ad, so we cannot remove duplicates
      */
     val adPerAppCountryInf = impressions
-      .groupBy(x => (x.appId, x.countryCode, x.advertiserId)).map(x => {
+      .groupBy(x => (x.appId, x.countryCode, x.advertiserId)).par.map(x => {
       val ids = x._2.collect(_.id)
       (x._1 /*key = app,country,ad */ ,
         ids.length /*num of impressions*/ ,
@@ -35,8 +36,8 @@ object AdSelector {
         a + revenues.get(b).getOrElse(0.0)) //total revenues by click
       val totalImpressions = x._2 //impression rate
       (x._1, totalRevs / totalImpressions)
-    }).groupBy(x => (x._1._1, x._1._2)).map(x => {
-      val sortedIds = x._2.toList
+    }).toList.groupBy(x => (x._1._1, x._1._2)).map(x => {
+      val sortedIds = x._2
         .sortWith(_._2 > _._2) //sort based the highest revenue per impression rate
         .map(_._1._3) //just need app id not the values
         .take(5) //just first 5 ids

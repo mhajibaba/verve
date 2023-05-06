@@ -15,12 +15,33 @@ object EventReader {
   /** support for objects which not comply with the provided schema * */
   mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
+  /**
+   * FUTURE WORK
+   *
+   *  1 - Use Polymorphism
+   *  Use generic class to remove duplicate codes. So this class should be like this:
+   *
+   * val impressions = lstImpressionFiles.flatMap(EventReader.parse[Impression](_))
+   * val clicks = lstClickFiles.flatMap(EventReader.parse[Click](_))
+   *
+      def parse[T](filePath: String): IndexedSeq[T] = {
+
+        val fileContents = Source.fromFile(filePath).mkString
+        //println(fileContents.size)
+
+        val records = mapper.readValue(fileContents, classOf[IndexedSeq[T]])
+        //println(records.length)
+
+        records
+      }
+  */
+
   def parseImpressions(filePath: String): Array[Impression] = {
 
     val fileContents = Source.fromFile(filePath).mkString
     //println(fileContents.size)
 
-    val impressions = mapper.readValue(fileContents, new TypeReference[Array[Impression]] {})
+    val impressions = mapper.readValue(fileContents, classOf[Array[Impression]])
     //println(impressions.length)
 
     impressions
